@@ -98,7 +98,7 @@ class GlobeLayer extends TiledGeometryLayer {
         const hypothenuse = canvasSize.length();
         const radAngle = context.view.camera.camera3D.fov * Math.PI / 180;
         const HYFOV = 2.0 * Math.atan(Math.tan(radAngle * 0.5) * hypothenuse / canvasSize.x);
-        context.camera.preSSE = hypothenuse * (2.0 * Math.tan(HYFOV * 0.5));
+        context.camera.preSSE = hypothenuse / (2.0 * Math.tan(HYFOV * 0.5));
 
         // Leaving the correct SSE below to be added later, as it is too heavy for now.
         // const FOV = THREE.Math.degToRad(context.camera.camera3D.fov);
