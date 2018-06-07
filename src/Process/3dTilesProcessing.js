@@ -139,31 +139,35 @@ function cleanup3dTileset(layer, n, depth = 0) {
     // So here we implement a conservative measure: if T is cleanable
     // we actually only clean its children tiles.
     const canCleanCompletely = n.additiveRefinement || depth > 0;
+    // and finally remove from parent
+    if (depth == 0 && n.parent) {
+        n.parent.remove(n);
+    }
 
     for (let i = 0; i < n.children.length; i++) {
         // skip non-tiles elements
         if (!n.children[i].content) {
             if (canCleanCompletely) {
                 n.children[i].traverse(_cleanupObject3D);
+                console.log('******* ici enfant ***', n.tileId);
+                if (n.children[i].tileId !== undefined) { 
+                   layer.tileIndex.index[n.children[i].tileId].loaded = false;
+                }
             }
         } else {
             cleanup3dTileset(layer, n.children[i], depth + 1);
         }
     }
 
-
+    console.log('******* ici parent ***', n.tileId);
     if (canCleanCompletely) {
+        layer.tileIndex.index[n.tileId].loaded = false;
+            console.log('je suis a false');
         if (n.dispose) {
             n.dispose();
         }
         delete n.content;
-        layer.tileIndex.index[n.tileId].loaded = false;
         n.remove(...n.children);
-
-        // and finally remove from parent
-        if (depth == 0 && n.parent) {
-            n.parent.remove(n);
-        }
     } else {
         const tiles = n.children.filter(n => n.tileId != undefined);
         n.remove(...tiles);
@@ -174,6 +178,7 @@ function cleanup3dTileset(layer, n, depth = 0) {
 // (no 3dtiles spectific code here because this is managed by cleanup3dTileset)
 function _cleanupObject3D(n) {
     // all children of 'n' are raw Object3D
+
     for (const child of n.children) {
         _cleanupObject3D(child);
     }

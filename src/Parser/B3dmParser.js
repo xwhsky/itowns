@@ -154,10 +154,15 @@ export default {
 
                 const version = new DataView(gltfBuffer, 0, 20).getUint32(4, true);
 
+                const onError = (e) => {
+                    debugger;
+                    console.log('Error loading b3dm', e);
+                };
+
                 if (version === 1) {
                     legacyGLTFLoader.parse(gltfBuffer, onload, urlBase);
                 } else {
-                    glTFLoader.parse(gltfBuffer, urlBase, onload);
+                    glTFLoader.parse(gltfBuffer, urlBase, onload, onError);
                 }
             }));
             return Promise.all(promises).then(values => ({ gltf: values[1], batchTable: values[0] }));

@@ -142,8 +142,7 @@ export default ( function () {
 
 			}
 
-			console.time( 'GLTFLoader' );
-
+			// console.time( 'GLTFLoader' );
 			var parser = new GLTFParser( json, extensions, {
 
 				path: path || this.path || '',
@@ -154,7 +153,7 @@ export default ( function () {
 
 			parser.parse( function ( scene, scenes, cameras, animations, asset ) {
 
-				console.timeEnd( 'GLTFLoader' );
+				// console.timeEnd( 'GLTFLoader' );
 
 				var glTF = {
 					scene: scene,
@@ -2048,7 +2047,7 @@ export default ( function () {
 							&& geometry.attributes.uv2 === undefined
 							&& geometry.attributes.uv !== undefined ) {
 
-						console.log( 'THREE.GLTFLoader: Duplicating UVs to support aoMap.' );
+						// console.log( 'THREE.GLTFLoader: Duplicating UVs to support aoMap.' );
 						geometry.addAttribute( 'uv2', new THREE.BufferAttribute( geometry.attributes.uv.array, 2 ) );
 
 					}

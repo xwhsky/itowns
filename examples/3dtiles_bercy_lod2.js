@@ -2,7 +2,7 @@
 // # Simple Globe viewer
 
 // Define initial camera position
-var positionOnGlobe = { longitude: 2.351323, latitude: 48.856712, altitude: 50000 };
+var positionOnGlobe = { longitude: 4.828576, latitude: 45.774569, altitude: 3000 };
 var promises = [];
 var miniView;
 var minDistance = 10000000;
