@@ -164,7 +164,7 @@ class FirstPersonControls extends THREE.EventDispatcher {
     // Event callback functions
     // Mouse movement handling
     onMouseDown(event) {
-        event.preventDefault();
+        // event.preventDefault();
         this._isMouseDown = true;
 
         const coords = this.view.eventToViewCoords(event);
