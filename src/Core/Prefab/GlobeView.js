@@ -5,6 +5,7 @@ import { MAIN_LOOP_EVENTS } from '../MainLoop';
 import { COLOR_LAYERS_ORDER_CHANGED } from '../../Renderer/ColorLayersOrdering';
 import RendererConstant from '../../Renderer/RendererConstant';
 import GlobeControls from '../../Renderer/ThreeExtended/GlobeControls';
+import OldImmersiveControls from '../../Renderer/ThreeExtended/OldImmersiveControls';
 
 import GlobeLayer from './Globe/GlobeLayer';
 import Atmosphere from './Globe/Atmosphere';
@@ -123,6 +124,8 @@ function GlobeView(viewerDiv, coordCarto, options = {}) {
     if (options.noControls) {
         this.camera.setPosition(positionCamera);
         this.camera.camera3D.lookAt(positionTargetCamera.as('EPSG:4978').xyz());
+    } else if (options.immersiveControls) {
+        this.controls = new OldImmersiveControls(this);
     } else {
         this.controls = new GlobeControls(this, positionTargetCamera, coordCarto.altitude, ellipsoidSizes.x);
         this.controls.handleCollision = typeof (options.handleCollision) !== 'undefined' ? options.handleCollision : true;
