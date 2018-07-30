@@ -9,6 +9,7 @@ import DataSourceProvider from '../../Provider/DataSourceProvider';
 import TileProvider from '../../Provider/TileProvider';
 import $3dTilesProvider from '../../Provider/3dTilesProvider';
 import PointCloudProvider from '../../Provider/PointCloudProvider';
+import OrientedImageProvider from '../../Provider/OrientedImageProvider';
 import CancelledCommandException from './CancelledCommandException';
 
 var instanceScheduler = null;
@@ -130,6 +131,7 @@ Scheduler.prototype.initDefaultProviders = function initDefaultProviders() {
     this.addProtocolProvider('tile', TileProvider);
     this.addProtocolProvider('3d-tiles', $3dTilesProvider);
     this.addProtocolProvider('potreeconverter', PointCloudProvider);
+    this.addProtocolProvider('orientedimage', OrientedImageProvider);
 };
 
 Scheduler.prototype.runCommand = function runCommand(command, queue, executingCounterUpToDate) {
