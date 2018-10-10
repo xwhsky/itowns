@@ -78,7 +78,7 @@
 
             globeView.addLayer({
                 type: 'geometry',
-                update: itowns.OrientedImageProcessing.update,
+                update: itowns.OrientedImageProcessing.update(),
                 images: 'http://www.itowns-project.org/itowns-sample-data-small/images/140616/Paris-140616_0740-{sensorId}-00001_0000{imageId}.jpg',
                 orientations: 'https://raw.githubusercontent.com/iTowns/iTowns2-sample-data/master/immersive/exampleParis1/panoramicsMetaDataParis.geojson',
                 calibrations: 'cameraCalibration.json',
