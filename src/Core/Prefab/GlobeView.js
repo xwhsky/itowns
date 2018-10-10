@@ -126,6 +126,7 @@ function GlobeView(viewerDiv, coordCarto, options = {}) {
         this.camera.setPosition(positionCamera);
         this.camera.camera3D.lookAt(positionTargetCamera.as('EPSG:4978').xyz());
     } else if (options.immersiveControls) {
+        this.camera.setPosition(positionCamera);
         this.controls = new OldImmersiveControls(this);
     } else if (options.controlsSwitcher) {
         this.controls = new ControlsSwitcher(this);
