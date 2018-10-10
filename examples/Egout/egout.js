@@ -11,8 +11,8 @@ var viewerDiv = document.getElementById('viewerDiv');
 // Instanciate iTowns GlobeView*
 var globeView = new itowns.GlobeView(viewerDiv, positionOnGlobe, {
     // controlsSwitcher: true,
+    // sseSubdivisionThreshold: 14,
     immersiveControls: true,
-    renderer: renderer,
     handleCollision: false });
 function addLayerCb(layer) {
     return globeView.addLayer(layer);
@@ -48,7 +48,7 @@ globeView.addLayer({
     calibrations: 'http://localhost:8080/examples/Egout/stereopolis_camera.json',
     protocol: 'orientedimage',
     sphereRadius: 50,
-    // id: 'stereopolis',
+    id: 'stereopolis',
     level: 16,
     // crs: 'EPSG:2154',
     view: globeView,
@@ -60,7 +60,6 @@ globeView.addLayer({
     globeView.addLayer({
         type: 'geometry',
         update: itowns.FeatureProcessing.update,
-        url: 'http://wxs.ign.fr/72hpsel8j8nhb5qgdh07gcyp/geoportail/wfs?',
         convert: itowns.Feature2Mesh.convert({
             altitude: altitudeBuildings,
             extrude: extrudeBuildings }),
@@ -70,21 +69,21 @@ globeView.addLayer({
                 res.children[i].material = result.material;
             }
         },
-        protocol: 'wfs',
-        version: '2.0.0',
-        id: 'wfsBuilding',
-        typeName: 'BDTOPO_BDD_WLD_WGS84G:bati_remarquable,BDTOPO_BDD_WLD_WGS84G:bati_indifferencie,BDTOPO_BDD_WLD_WGS84G:bati_industriel',
-        level: 16,
-        projection: 'EPSG:4326',
-        extent: {
-            west: 2.35,
-            east: 2.37,
-            south: 48.86,
-            north: 48.88,
-        },
-        ipr: 'IGN',
-        options: {
-            mimetype: 'json',
+        source: {
+            protocol: 'wfs',
+            version: '2.0.0',
+            id: 'wfsBuilding',
+            url: 'http://wxs.ign.fr/72hpsel8j8nhb5qgdh07gcyp/geoportail/wfs?',
+            typeName: 'BDTOPO_BDD_WLD_WGS84G:bati_remarquable,BDTOPO_BDD_WLD_WGS84G:bati_indifferencie,BDTOPO_BDD_WLD_WGS84G:bati_industriel',
+            level: 10,
+            projection: 'EPSG:4326',
+            extent: {
+                west: 2.35,
+                east: 2.37,
+                south: 48.86,
+                north: 48.88,
+            },
+            ipr: 'IGN',
         },
     }, globeView.tileLayer);
 });
@@ -96,12 +95,8 @@ globeView.addLayer({
     orientations: 'http://localhost:8080/examples/Egout/egout_pano.geojson',
     calibrations: 'http://localhost:8080/examples/Egout/egout_camera.json',
     protocol: 'orientedimage',
-    // offset: { x: 650000, y: 6860000, z: -43.795 },
-    // version: '2.0.0',
     id: 'demo_orientedImage',
-    // typeName: 'tcl_sytral.tcllignebus',
     level: 16,
-    // crs: 'EPSG:2154',
     view: globeView,
     crsOut: globeView.referenceCrs,
     format: 'geojson',
@@ -126,8 +121,3 @@ globeView.addLayer({
         globeView.scene.add(mesh);
     });
 });
-
-globeView.wgs84TileLayer.sseSubdivisionThreshold = 10;
-
-exports.view = globeView;
-exports.initialPosition = positionOnGlobe;
