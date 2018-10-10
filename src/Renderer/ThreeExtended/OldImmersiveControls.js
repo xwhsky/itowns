@@ -214,6 +214,7 @@ class ImmersiveControls extends THREE.EventDispatcher {
         super();
 
         this.camera = view.camera.camera3D;
+        this.camera.far = 100;
         this.view = view;
 
         this.player = new AnimationPlayer();
@@ -308,7 +309,7 @@ class ImmersiveControls extends THREE.EventDispatcher {
         const nextPanoPosition = getNextPano(this.currentLayer).position;
         const currentPanoPosition = getCurrentPano(this.currentLayer).position;
         this.setCameraOnPano(currentPanoPosition, nextPanoPosition);
-        // this.view.wgs84TileLayer.visible = !this.view.wgs84TileLayer.visible;
+        // this.view.tileLayer.visible = !this.view.tileLayer.visible;
     }
 
     moveCameraTo(positionTo) {
