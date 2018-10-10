@@ -78,7 +78,7 @@
 
             globeView.addLayer({
                 type: 'geometry',
-                update: itowns.OrientedImageProcessing.update(),
+                update: itowns.OrientedImageProcessing.update,
                 images: 'http://www.itowns-project.org/itowns-sample-data-small/images/140616/Paris-140616_0740-{sensorId}-00001_0000{imageId}.jpg',
                 orientations: 'https://raw.githubusercontent.com/iTowns/iTowns2-sample-data/master/immersive/exampleParis1/panoramicsMetaDataParis.geojson',
                 calibrations: 'cameraCalibration.json',
@@ -91,7 +91,7 @@
                 axisHelpers: false,
                 cameraHelpers: false,
                 sphereRadius: 50,
-            }, globeView.wgs84TileLayer).then(function addWfsLayer(layer) {
+            }, globeView.tileLayer).then(function addWfsLayer(layer) {
                 orientedImageLayer = layer;
 
                 immersiveControl.addLayer(orientedImageLayer);
@@ -103,22 +103,44 @@
                         altitude: altitudeBuildings,
                         extrude: extrudeBuildings }),
                     onMeshCreated: (mesh) => mesh.traverse(object => object.material = orientedImageLayer.material),
-                    url: 'http://wxs.ign.fr/72hpsel8j8nhb5qgdh07gcyp/geoportail/wfs?',
-                    protocol: 'wfs',
-                    version: '2.0.0',
-                    id: 'WFS Buildings',
-                    typeName: 'BDTOPO_BDD_WLD_WGS84G:bati_remarquable,BDTOPO_BDD_WLD_WGS84G:bati_indifferencie,BDTOPO_BDD_WLD_WGS84G:bati_industriel',
-                    level: 16,
-                    projection: 'EPSG:4326',
-                    extent: {
+                    source: {
+                        protocol: 'wfs',
+                        version: '2.0.0',
+                        id: 'wfsBuilding',
+                        url: 'http://wxs.ign.fr/72hpsel8j8nhb5qgdh07gcyp/geoportail/wfs?',
+                        typeName: 'BDTOPO_BDD_WLD_WGS84G:bati_remarquable,BDTOPO_BDD_WLD_WGS84G:bati_indifferencie,BDTOPO_BDD_WLD_WGS84G:bati_industriel',
+                        level: 10,
+                        projection: 'EPSG:4326',
+                        extent: {
                         west: 2.334,
                         east: 2.335,
                         south: 48.849,
                         north: 48.851,
+                        },
+                        // extent: {
+                        //     west: 2.35,
+                        //     east: 2.37,
+                        //     south: 48.86,
+                        //     north: 48.88,
+                        // },
+                        ipr: 'IGN',
                     },
-                    ipr: 'IGN',
-                    format: 'json',
-                }, globeView.wgs84TileLayer);
+                    // url: 'http://wxs.ign.fr/72hpsel8j8nhb5qgdh07gcyp/geoportail/wfs?',
+                    // protocol: 'wfs',
+                    // version: '2.0.0',
+                    // id: 'WFS Buildings',
+                    // typeName: 'BDTOPO_BDD_WLD_WGS84G:bati_remarquable,BDTOPO_BDD_WLD_WGS84G:bati_indifferencie,BDTOPO_BDD_WLD_WGS84G:bati_industriel',
+                    // level: 16,
+                    // projection: 'EPSG:4326',
+                    // extent: {
+                    //     west: 2.334,
+                    //     east: 2.335,
+                    //     south: 48.849,
+                    //     north: 48.851,
+                    // },
+                    // ipr: 'IGN',
+                    // format: 'json',
+                }, globeView.tileLayer);
             });
             
             /* global itowns, document, GuiTools, globeView, promises */
@@ -137,7 +159,7 @@
                     // debug.OrientedImageDebug.initTools(globeView, orientedImageLayer, menuGlobe.gui);
 
                     const d = new debug.Debug(globeView, menuGlobe.gui);
-                    debug.createTileDebugUI(menuGlobe.gui, globeView, globeView.wgs84TileLayer, d);
+                    debug.createTileDebugUI(menuGlobe.gui, globeView, globeView.tileLayer, d);
                     for (let layer of globeView.getLayers()) {
                         if (layer.id === 'WFS Buildings') {
                             layer.whenReady.then( function _(layer) {
