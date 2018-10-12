@@ -29,6 +29,7 @@ and open the template in the editor.
     </head>
     <body>
         <div id="viewerDiv"></div>
+        <script src="examples/js/legal.js"></script>
         <script src="examples/js/GUI/GuiTools.js"></script>
         <script src="dist/itowns.js"></script>
         <script src="dist/debug.js"></script>
@@ -46,26 +47,36 @@ and open the template in the editor.
                 globeView.addLayer(layer).then(menuGlobe.addLayerGUI.bind(menuGlobe));
             }
 
-            itowns.Fetcher.json('examples/layers/JSONLayers/Ortho.json').then(addLayerCb);
-            itowns.Fetcher.json('examples/layers/JSONLayers/OrthosCRS.json').then(addLayerCb);
-            itowns.Fetcher.json('examples/layers/JSONLayers/ScanEX.json').then(addLayerCb);
-            itowns.Fetcher.json('examples/layers/JSONLayers/Region.json').then(addLayerCb);
+            function addData(){                
+                itowns.Fetcher.json('examples/layers/JSONLayers/Ortho.json').then(addLayerCb);
+                itowns.Fetcher.json('examples/layers/JSONLayers/OrthosCRS.json').then(addLayerCb);
+                itowns.Fetcher.json('examples/layers/JSONLayers/ScanEX.json').then(addLayerCb);
+                itowns.Fetcher.json('examples/layers/JSONLayers/Region.json').then(addLayerCb);
 
-            itowns.Fetcher.json('examples/layers/JSONLayers/Cada.json').then(addLayerCb);
-            itowns.Fetcher.json('examples/layers/JSONLayers/Administrative.json').then(addLayerCb);
-            itowns.Fetcher.json('examples/layers/JSONLayers/Transport.json').then(addLayerCb);
-            itowns.Fetcher.json('examples/layers/JSONLayers/Railways.json').then(addLayerCb);
-            itowns.Fetcher.json('examples/layers/JSONLayers/Denomination.json').then(addLayerCb);
+                itowns.Fetcher.json('examples/layers/JSONLayers/Cada.json').then(addLayerCb);
+                itowns.Fetcher.json('examples/layers/JSONLayers/Administrative.json').then(addLayerCb);
+                itowns.Fetcher.json('examples/layers/JSONLayers/Transport.json').then(addLayerCb);
+                itowns.Fetcher.json('examples/layers/JSONLayers/Railways.json').then(addLayerCb);
+                itowns.Fetcher.json('examples/layers/JSONLayers/Denomination.json').then(addLayerCb);
 
-            itowns.Fetcher.json('examples/layers/JSONLayers/WORLD_DTM.json').then(addLayerCb);
-            itowns.Fetcher.json('examples/layers/JSONLayers/IGN_MNT_HIGHRES.json').then(addLayerCb);
+                itowns.Fetcher.json('examples/layers/JSONLayers/WORLD_DTM.json').then(addLayerCb);
+                itowns.Fetcher.json('examples/layers/JSONLayers/IGN_MNT_HIGHRES.json').then(addLayerCb);
 
-            menuGlobe.addGUI('RealisticLighting', false, globeView.setRealisticLightingOn.bind(globeView));
+                menuGlobe.addGUI('RealisticLighting', false, globeView.setRealisticLightingOn.bind(globeView));
+            }
+
 
             // eslint-disable-next-line prefer-arrow-callback
             globeView.addEventListener(itowns.GLOBE_VIEW_EVENTS.GLOBE_INITIALIZED, function m() {
                 // eslint-disable-next-line no-console
                 console.info('Globe initialized');
+                
+                formulaire.addEventListener('submit', function(e){
+                    e.preventDefault();
+                    legalDiv.style.display = 'none'; 
+                    addData();
+                });
+
             });
 
             const d = new debug.Debug(globeView, menuGlobe.gui);
