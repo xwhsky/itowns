@@ -187,7 +187,7 @@ function update2() {
 }
 
 function getPanoPosition(layer, pano) {
-    return { position: pano.vertices[0].xyz() };
+    return { position: pano.position };
 }
 
 function getNextPano(layer) {
