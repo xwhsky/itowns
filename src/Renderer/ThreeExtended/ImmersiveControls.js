@@ -2,7 +2,7 @@ import FirstPersonControls from './FirstPersonControls';
 import AnimationPlayer, { AnimatedExpression } from '../../Core/AnimationPlayer';
 
 function getPanoPosition(layer, pano) {
-    return { position: pano.vertices[0].xyz() };
+    return { position: pano.position };
 }
 
 function getNextPano(layer) {
