@@ -6,7 +6,7 @@ import OrientationUtils from '../utils/OrientationUtils';
 import CameraCalibrationParser from '../Parser/CameraCalibrationParser';
 import OrientedImageMaterial from '../Renderer/OrientedImageMaterial';
 import GeoJsonParser from '../Parser/GeoJsonParser';
-// import Coordinates from '../Core/Geographic/Coordinates';
+import Coordinates from '../Core/Geographic/Coordinates';
 
 function createSphere(radius) {
     if (!radius || radius <= 0) return undefined;
@@ -17,6 +17,8 @@ function createSphere(radius) {
     sphere.name = 'OrientedImageBackground';
     return sphere;
 }
+
+const coord = new Coordinates('EPSG:4978', 0, 0, 0);
 
 function preprocessDataLayer(layer) {
     layer.format = layer.format || 'json';
@@ -37,6 +39,8 @@ function preprocessDataLayer(layer) {
 
     var promises = [];
 
+    // TODO : Passer un objet Option au Parser
+    layer.mergeFeatures = false;
     // layer.orientations: a GEOJSON file with position/orientation for all the oriented images
     promises.push(Fetcher.json(layer.orientations, layer.networkOptions)
         .then(orientations => GeoJsonParser.parse(orientations, layer)));
@@ -54,10 +58,14 @@ function preprocessDataLayer(layer) {
         const isGlobe = layer.crsOut == 'EPSG:4978';
 
         // add position attributes from point feature
+        console.log('POSES : ', layer.poses);
         for (const pose of layer.poses) {
-            var coord = pose.vertices[0];
+            console.log(pose);
+            coord.set(pose.crs, pose.vertices[0], pose.vertices[1], pose.vertices[2]);
+            // coord.set(pose.crs, pose.position);
+            // var coord = pose.vertices[0];
             pose.position = coord.xyz();
-            pose.quaternion = OrientationUtils.quaternionFromAttitude(pose.properties, coord, isGlobe);
+            pose.quaternion = OrientationUtils.quaternionFromAttitude(pose.geometry[0].properties, coord, isGlobe);
         }
     });
 }
@@ -70,7 +78,7 @@ function executeCommand(command) {
         // command is outdated, do nothing
         return Promise.resolve();
     }
-    const imageId = pano.properties.id;
+    const imageId = pano.geometry[0].properties.id;
     var promises = [];
     for (const camera of layer.cameras) {
         var sensorId = camera.name;

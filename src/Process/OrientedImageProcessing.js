@@ -3,7 +3,7 @@ function updatePano(context, camera, layer) {
     let minD = Infinity;
     let minI = -1;
     for (let i = 0; i < layer.poses.length; i++) {
-        const position = layer.poses[i].vertices[0].xyz();
+        const position = layer.poses[i].position;
         const D = camera.position.distanceTo(position);
         if (D < minD) {
             minD = D;
@@ -28,7 +28,7 @@ function updatePano(context, camera, layer) {
 
 function updateSphere(layer) {
     if (layer.background && layer.currentPano) {
-        layer.currentPano.vertices[0].xyz(layer.background.position);
+        layer.background.position.copy(layer.currentPano.position);
         layer.background.updateMatrixWorld();
         layer.background.material = layer.material || layer.background.material;
     }
