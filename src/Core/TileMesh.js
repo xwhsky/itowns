@@ -33,6 +33,8 @@ class TileMesh extends THREE.Mesh {
         this.matrixAutoUpdate = false;
         this.rotationAutoUpdate = false;
 
+        this.pendingSubdivision = false;
+
         this.layerUpdateState = {};
     }
 
