@@ -281,6 +281,10 @@ class TiledGeometryLayer extends GeometryLayer {
         const layerUpdateState = node.layerUpdateState || {};
         let nodeLayer = node.material.getElevationLayer();
 
+        if (node.level > 4 && node.horizon && node.horizon > 0.75) {
+            return false;
+        }
+
         for (const e of context.elevationLayers) {
             const extents = node.getCoordsForSource(e.source);
             if (!e.frozen && e.ready && e.source.extentsInsideLimit(extents) && (!nodeLayer || nodeLayer.level < 0)) {

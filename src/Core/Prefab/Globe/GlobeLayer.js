@@ -120,12 +120,15 @@ class GlobeLayer extends TiledGeometryLayer {
 
         const vtMagnitudeSquared = scaledHorizonCullingPoint.lengthSq();
         const dot = -scaledHorizonCullingPoint.dot(cameraPosition);
+
         const isOccluded = magnitudeSquared < 0 ? dot > 0 : magnitudeSquared < dot && magnitudeSquared < ((dot * dot) / vtMagnitudeSquared);
 
         if (!isOccluded) {
+            node.horizon = dot / magnitudeSquared;
             return false;
         }
 
+        node.horizon = undefined;
         return true;
     }
 
